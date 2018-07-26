@@ -8,7 +8,7 @@ class IndexPage extends Component{
             
             <div>
                 <Hero
-                    title="What a life"
+                    title="Bacon"
                     backgroundImg={background}
                     minimumheight='80vh' />    
             </div>

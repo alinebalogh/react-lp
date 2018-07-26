@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import { css} from 'emotion'
 import styled, {keyframes} from 'react-emotion'
+import global from './Global'
+
 
 class Hero extends Component{
-
+    
     render(){
         const {
             classes,
@@ -17,9 +19,7 @@ class Hero extends Component{
             display:flex;
             justify-content: center;
             align-items: center;
-        `
-        const Background = styled('div')`
-            background-color: rgba(36, 28, 28, 0.51);
+            background-color: rgba(36, 28, 28, 1);
             background-image: url('${(props)=> backgroundImg}');  
             height: ${(props)=> minimumheight};
             width:100%;
@@ -38,13 +38,14 @@ class Hero extends Component{
             text-align: center;
             color: #e3dbdb;
             font-size: 58px;
+            font-family: 'Roboto';
             z-index: 10;
             text-shadow: 0 4px 4px rgba(0, 0, 0, 0.4),
                         0 4px 14px rgba(0, 0, 0, 0.1),
                         0 0 24px rgba(0, 0, 0, 0.1);
-            :after{
+            &:after{
                 display: block;
-                content: "What a time";
+                content: "Bacon ipsum dolor amet shankle chuck sirloin.";
                 padding: 0;
                 margin:0;
                 text-align: center;
@@ -60,16 +61,13 @@ class Hero extends Component{
 
         return (
             <HeroWrap >
-                <Background >
+                <div >
                     <Text>{title}<br /> </Text>
-                </Background>
+                </div>
             </HeroWrap>
         )
     }
 }
 
-// const styles = StyleSheet.create({
-
-// })
 
 export default Hero
