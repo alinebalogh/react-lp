@@ -5,6 +5,7 @@ injectGlobal`
   * {
     box-sizing: border-box;
     font-family: 'Roboto';
+    margin:0;
   }
   @font-face {
     font-family: 'Patrick Hand SC';
