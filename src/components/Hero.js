@@ -19,7 +19,6 @@ import global from './Global'
         background-attachment: fixed;
         background-blend-mode: multiply;
         position: relative;
-        z-index:-1;
     `
     const type = keyframes`
         from { width: 0;}
@@ -29,7 +28,6 @@ import global from './Global'
         color: #e3dbdb;
         font-size: 58px;
         font-family:'Boogaloo', cursive;
-        z-index: 10;
         text-shadow: 0 4px 4px rgba(0, 0, 0, 0.4),
                     0 4px 14px rgba(0, 0, 0, 0.1),
                     0 0 24px rgba(0, 0, 0, 0.1);
@@ -48,7 +46,6 @@ import global from './Global'
         }
 
     `
-function Search(){
     const stroke = css`
         fill: none;
         stroke: #fff
@@ -57,17 +54,26 @@ function Search(){
         margin-top: 30px;
         width: 300px;
     `
-    return(
-        <svg className={magnifier} viewBox="0 0 300 40">
-            <circle 
-            className={stroke} 
-            cx="12.1" cy="12.1" r="11.6" />
-            <line className={stroke} x1="20.5" y1="20" x2="33.1" y2="32.6" />
-        </svg>
-    )
-}
 
 class Hero extends Component{
+
+    constructor(){
+        super()    
+        this.state = {
+            searchOpen: false,
+            searchColor: ''
+        }
+        this.toggleSearch = this.toggleSearch.bind(this)
+    }
+    
+
+    toggleSearch() {
+        this.setState({
+            searchColor: this.state.searchOpen? 'red' : 'white',
+            searchOpen: !this.state.searchOpen                        
+        })
+
+    }
     
     render(){
         
@@ -79,13 +85,23 @@ class Hero extends Component{
             minimumheight
         } = this.props
         
+        const { searchOpen, searchColor } = this.state
+
         return (
             <HeroWrap 
                 backgroundImg={backgroundImg}
                 minimumheight={minimumheight} >
                 <div >
                     <Text subtitle={subtitle} >{title}<br /> </Text>
-                    <Search/>
+                    <div onClick={this.toggleSearch} >
+                        <svg className={magnifier} viewBox="0 0 300 40">
+                            <circle       
+                            style={{fill:searchColor}}
+                            className={stroke} 
+                            cx="12.1" cy="12.1" r="11.6" />
+                            <line  className={stroke} x1="20.5" y1="20" x2="33.1" y2="32.6" />
+                        </svg>
+                    </div>
                 </div>
                 
             </HeroWrap>
