@@ -48,11 +48,14 @@ import global from './Global'
     `
     const stroke = css`
         fill: none;
-        stroke: #fff
+        stroke: #fff;
     `
     const magnifier = css`
         margin-top: 30px;
         width: 300px;
+    `
+    const lineOpen = css`
+        transform: translatey(17px) rotate(-2.5deg);
     `
 
 class Hero extends Component{
@@ -63,16 +66,20 @@ class Hero extends Component{
             searchOpen: false,
             searchColor: ''
         }
+
+        // My Refs
+        this.circle = React.createRef();
+        this.line = React.createRef();
+
         this.toggleSearch = this.toggleSearch.bind(this)
     }
     
 
-    toggleSearch() {
+    toggleSearch(e) {
         this.setState({
             searchColor: this.state.searchOpen? 'red' : 'white',
             searchOpen: !this.state.searchOpen                        
         })
-
     }
     
     render(){
@@ -99,7 +106,11 @@ class Hero extends Component{
                             style={{fill:searchColor}}
                             className={stroke} 
                             cx="12.1" cy="12.1" r="11.6" />
-                            <line  className={stroke} x1="20.5" y1="20" x2="33.1" y2="32.6" />
+                            <line  
+                            className={css`${stroke} ${searchOpen? lineOpen : ''}`}
+                            x1="20.5" y1="20" 
+                            x2={searchOpen? 300 : 33.1} 
+                            y2="32.6" />
                         </svg>
                     </div>
                 </div>
