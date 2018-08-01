@@ -61,7 +61,7 @@ import global from './Global'
         width: 300px;
         margin: 10px auto;
     `
-    const searchInput = css`
+    const searchInput = css` 
         position: absolute;
         background: none;
         border: none;
