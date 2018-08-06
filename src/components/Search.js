@@ -62,10 +62,20 @@ class Search extends Component{
         this.state = {
             searchOpen: false
         }
+        
 
         this.toggleSearch = this.toggleSearch.bind(this)
     }
     
+    fetchSearchTerm(){
+        const endpoint = 'https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes'
+        
+        const cities = [];
+
+        fetch(endpoint)
+            .then(blob => blob.json())
+            .then(data => cities.push(...data));
+    }
 
     toggleSearch(e) {
         this.setState({
