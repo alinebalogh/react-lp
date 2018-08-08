@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { css} from 'emotion'
 import styled, {keyframes} from 'react-emotion'
-import global from './Global'
+import fetch from 'isomorphic-fetch'
 
 // Styled components 
 
@@ -60,21 +60,28 @@ class Search extends Component{
     constructor(){
         super()    
         this.state = {
+            data: [],
+            searchValue: "",
             searchOpen: false
         }
         
 
         this.toggleSearch = this.toggleSearch.bind(this)
+        this.getValue = this.getValue.bind(this)
     }
-    
-    fetchSearchTerm(){
-        const endpoint = 'https://servicodados.ibge.gov.br/api/v1/localidades/microrregioes'
-        
-        const cities = [];
 
+    componentDidMount(){
+        const endpoint = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados';
         fetch(endpoint)
-            .then(blob => blob.json())
-            .then(data => cities.push(...data));
+            .then(function(response) {
+                if (response.status >= 400) {
+                    throw new Error("Bad response from server");
+                }
+                return response.json();
+            })
+            .then(data=> {
+                this.setState({data})
+            });        
     }
 
     toggleSearch(e) {
@@ -82,18 +89,17 @@ class Search extends Component{
             searchOpen: !this.state.searchOpen                        
         })
     }
+
+    getValue(e){
+        console.log(e.target.value)
+        this.setState({searchValue: e.target.value})
+        console.log(this.state.searchValue)
+    }
     
     render(){
         
-        const {
-            classes,
-            title,
-            subtitle,
-            backgroundImg,
-            minimumheight
-        } = this.props
-        
-        const { searchOpen, searchColor } = this.state
+       
+        const { searchOpen } = this.state
 
         return (
                 <div className={wrapAnima} onClick={this.toggleSearch} >
@@ -107,7 +113,9 @@ class Search extends Component{
                         x2={searchOpen? 300 : 33.1} 
                         y2="32.6" />
                     </svg>
-                    <input className={searchInput} /> 
+                    <input className={searchInput} onChange={this.getValue} value={this.state.searchValue}/> 
+                    <ul className="suggestions">
+                    </ul>
                     <svg className={xIcon}  viewBox="0 0 29.3 29.3">    
                         <line className={css` ${searchOpen? 'opacity: 1 ;' : 'opacity: 0;'}` } x1="0.5" y1="0.5" x2="28.8" y2="28.8"/>
                         <line className={css` ${searchOpen? 'opacity: 1 ;' : 'opacity: 0;'}` } x1="0.5" y1="28.8" x2="28.8" y2="0.5"/>
