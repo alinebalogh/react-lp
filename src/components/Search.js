@@ -68,10 +68,11 @@ class Search extends Component{
 
         this.toggleSearch = this.toggleSearch.bind(this)
         this.getValue = this.getValue.bind(this)
+        this.findMatches = this.findMatches.bind(this)
     }
 
     componentDidMount(){
-        const endpoint = 'https://servicodados.ibge.gov.br/api/v1/localidades/estados';
+        const endpoint = 'https://servicodados.ibge.gov.br/api/v1/localidades/municipios';
         fetch(endpoint)
             .then(function(response) {
                 if (response.status >= 400) {
@@ -91,9 +92,37 @@ class Search extends Component{
     }
 
     getValue(e){
-        console.log(e.target.value)
+        const {searchValue } = this.state
+        console.log(searchValue)
         this.setState({searchValue: e.target.value})
-        console.log(this.state.searchValue)
+        if(searchValue.length > 2){
+            const matches = this.findMatches(searchValue)
+            console.log(matches)
+        } 
+    }
+
+    findMatches(term){
+        const {data} = this.state
+        return data.filter(place => {
+            // here we need to figure out if the city or state matches what was searched
+            const regex = new RegExp(term, 'gi');
+            return place.nome.match(regex) || 
+            place.microrregiao.nome.match(regex) || 
+            place.microrregiao.mesorregiao.nome.match(regex) || 
+            place.microrregiao.mesorregiao.UF.nome.match(regex)
+          })
+
+    }
+
+    cleanTerm(text){
+        text = text.toLowerCase();                                                         
+        text = text.replace(new RegExp('[ÁÀÂÃ]','gi'), 'a')
+        text = text.replace(new RegExp('[ÉÈÊ]','gi'), 'e')
+        text = text.replace(new RegExp('[ÍÌÎ]','gi'), 'i')
+        text = text.replace(new RegExp('[ÓÒÔÕ]','gi'), 'o')
+        text = text.replace(new RegExp('[ÚÙÛ]','gi'), 'u')
+        text = text.replace(new RegExp('[Ç]','gi'), 'c')
+        return text
     }
     
     render(){
